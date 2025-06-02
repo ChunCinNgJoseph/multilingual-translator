@@ -1,7 +1,8 @@
 Flask
 requests
-whisper @ git+https://github.com/openai/whisper.git
-torch
-numpy
-face_recognition
 edge-tts
+face_recognition
+numpy
+gunicorn
+python-dotenv
+git+https://github.com/openai/whisper.git
