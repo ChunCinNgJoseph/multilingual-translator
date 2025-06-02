@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register Face</title>
+</head>
+<body>
+  <h2>👤 Register Your Face</h2>
+  <label>Your Name:</label><br>
+  <input type="text" id="name" placeholder="e.g. joseph" /><br><br>
+
+  <label>Preferred Language:</label><br>
+  <select id="lang">
+    <option value="en">English</option>
+    <option value="zh">Chinese</option>
+    <option value="es">Spanish</option>
+    <option value="fr">French</option>
+    <option value="de">German</option>
+  </select><br><br>
+
+  <video id="video" autoplay width="480" height="360" style="border: 1px solid gray;"></video><br>
+  <button onclick="register()">📸 Register</button>
+
+  <script>
+    const video = document.getElementById("video");
+
+    // Start webcam
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+      })
+      .catch(err => alert("Camera error: " + err));
+
+    async function register() {
+      const name = document.getElementById("name").value.trim();
+      const lang = document.getElementById("lang").value;
+      if (!name) {
+        alert("Please enter your name.");
+        return;
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg"));
+      const formData = new FormData();
+      formData.append("image", blob, "snapshot.jpg");
+      formData.append("name", name);
+      formData.append("lang", lang);
+
+      const res = await fetch("/register-face", {
+        method: "POST",
+        body: formData
+      });
+      const data = await res.json();
+      alert(data.message);
+    }
+  </script>
+</body>
+</html>
