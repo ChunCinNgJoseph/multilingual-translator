@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Voice/Text Translator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f0f2f5;
+    }
+    textarea, select, button, input {
+      margin-top: 10px;
+      display: block;
+    }
+    textarea {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div style="display: flex; gap: 40px; align-items: flex-start;">
+    <!-- Left Panel -->
+    <div style="width: 65%; display: flex; flex-direction: column; gap: 30px;">
+
+      <!-- 🧑‍🔧 Identify Card -->
+      <div id="identifyCard" style="background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center;">
+        <h3 id="identifyTitle">🧑‍🔧 Identify Me via Face</h3>
+        <video id="facePreview" autoplay width="300" height="225" style="border-radius: 8px; border: 1px solid #ccc;"></video>
+        <br><br>
+        <button id="identifyBtn" onclick="captureAndIdentify()" style="padding: 10px 20px; font-size: 16px; border-radius: 6px; border: none; background-color: #0078d4; color: white; cursor: pointer;">
+          📸 Identify Face
+        </button>
+        <br>
+        <button id="registerLink" onclick="openModal()" style="margin-top: 10px; background-color: #eee; border: 1px solid #ccc; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
+          🆕 New user? Register here
+        </button>
+      </div>
+
+      <!-- 🧭 Input + 🌐 Output Language + ✅ Submit -->
+      <div style="background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+
+        <h3 id="labelInputMethod">🧭 Choose Input Method</h3>
+        <select id="inputMode" onchange="toggleInputMode()" style="margin-bottom: 10px; width: 100%; padding: 6px;">
+          <option id="optionSelectPrompt" value="">-- Select --</option>
+          <option id="optionSpeak" value="voice">🎤 Speak</option>
+          <option id="optionType" value="text">⌨️ Type</option>
+        </select>
+
+        <div id="voiceInput" style="display: none;">
+          <button id="btnSubmitVoice" onclick="toggleRecording()">🎤 Start Recording</button>
+          <button onclick="submitVoice()">Submit Voice</button>
+          <audio id="playback" controls style="margin-top: 10px;"></audio>
+        </div>
+
+        <div id="textInput" style="display: none;">
+          <textarea id="manualInput" rows="3" placeholder="Type something..." style="width: 100%;"></textarea>
+        </div>
+
+        <h3 id="labelOutputLang" style="margin-top: 20px;">🌐 Choose Output Language</h3>
+        <select id="targetLang" style="width: 100%; padding: 6px;">
+          <option value="en">English</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+          <option value="zh">Chinese</option>
+        </select>
+
+        <button id="submitBtn" onclick="submitText()" style="margin-top: 10px;">✅ Submit</button>
+
+        <button id="resetLangBtn" onclick="resetLanguage()" style="margin-top: 10px; background-color: #f8d7da; border: 1px solid #f5c2c7; padding: 6px 12px; border-radius: 6px; color: #721c24; cursor: pointer;">
+          🔁 Reset Language
+        </button>
+      </div>
+      <div style="margin-top: 30px; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        <p><strong id="userSpeechLabel">🗣️ You said:</strong></p>
+        <pre id="userSpeech">(none)</pre>
+
+        <h3 id="outputLabel">📤 Output</h3>
+        <p id="output">No submission yet.</p>
+
+        <audio id="ttsAudio" controls style="margin-top: 10px;"></audio>
+      </div>
+    </div>
+
+      <!-- 📰 Right Panel -->
+      <div id="newsCard" style="width: 30%; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        <h3 id="newsTitle">📰 Latest News</h3>
+        <label id="newsLabel" for="numArticles">Number of headlines:</label>
+        <input type="number" id="numArticles" min="1" max="10" value="3" style="width: 50px;">
+        <button id="btnRefreshNews" onclick="getNews()">🔄 Refresh News</button>
+        <button id="btnReadNews" onclick="readNews()">📢 Read News</button>
+        <ul id="newsList" style="margin-top: 10px;"></ul>
+      </div>
+    </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

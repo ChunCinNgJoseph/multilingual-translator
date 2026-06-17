@@ -1,0 +1,9 @@
+Flask
+requests
+edge-tts
+face_recognition
+numpy==1.26.4
+torch==2.6.0
+gunicorn
+python-dotenv
+git+https://github.com/openai/whisper.git

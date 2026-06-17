@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Voice/Text Translator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f0f2f5;
+    }
+    textarea, select, button, input {
+      margin-top: 10px;
+      display: block;
+    }
+    textarea {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div style="display: flex; gap: 40px;">
+    <!-- Left Panel -->
+    <div style="flex: 2; display: flex; flex-direction: column; gap: 30px;">
+
+      <!-- 🧑‍🔧 Identify Card -->
+      <div id="identifyCard" style="background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center;">
+        <h3 id="identifyTitle">🧑‍🔧 Identify Me via Face</h3>
+        <video id="facePreview" autoplay width="300" height="225" style="border-radius: 8px; border: 1px solid #ccc;"></video>
+        <br><br>
+        <button id="identifyBtn" onclick="captureAndIdentify()" style="padding: 10px 20px; font-size: 16px; border-radius: 6px; border: none; background-color: #0078d4; color: white; cursor: pointer;">
+          📸 Identify Face
+        </button>
+        <br>
+        <button id="registerLink" onclick="openModal()" style="margin-top: 10px; background-color: #eee; border: 1px solid #ccc; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
+          🆕 New user? Register here
+        </button>
+      </div>
+
+      <!-- 🎛️ Input Method -->
+      <div style="background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        <h3 id="labelInputMethod">🧭 Choose Input Method</h3>
+        <select id="inputMode" onchange="toggleInputMode()" style="margin-bottom: 10px; width: 100%; padding: 6px;">
+          <option id="optionSelectPrompt" value="">-- Select --</option>
+          <option value="voice">🎤 Speak</option>
+          <option value="text">⌨️ Type</option>
+        </select>
+
+        <div id="voiceInput" style="display: none;">
+          <button id="btnSubmitVoice" onclick="toggleRecording()">🎤 Start Recording</button>
+          <button onclick="submitVoice()">Submit Voice</button>
+          <audio id="playback" controls style="margin-top: 10px;"></audio>
+        </div>
+
+        <div id="textInput" style="display: none;">
+          <textarea id="manualInput" rows="3" placeholder="Type something..."></textarea>
+          <button id="btnSubmitText" onclick="submitText()">Submit Text</button>
+        </div>
+      </div>
+
+      <!-- 🌐 Language + Submit -->
+      <div style="background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        <h3 id="labelOutputLang">🌐 Choose Output Language</h3>
+        <select id="targetLang" style="width: 100%; padding: 6px;">
+          <option value="en">English</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+          <option value="zh">Chinese</option>
+        </select>
+        <br><br>
+        <button id="submitBtn" onclick="submit()">✅ Submit</button>
+      </div>
+
+      <!-- 📄 Output -->
+      <div style="background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        <p><strong id="userSpeechLabel">You said:</strong> <span id="userSpeech">(none)</span></p>
+        <h3 id="outputLabel">📄 Output:</h3>
+        <p id="output">No submission yet.</p>
+        <audio id="ttsPlayback" controls></audio>
+      </div>
+    </div>
+
+    <!-- 📰 Right Panel -->
+    <div style="flex: 1;">
+      <div style="background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        <h3 id="newsTitle">📰 Latest News</h3>
+        <label id="newsLabel">How many news items to display:</label>
+        <input type="number" id="count" min="1" max="10" value="3" style="width: 100%; padding: 6px; margin-bottom: 10px;" />
+        <button id="btnRefreshNews" onclick="getNews()">🔄 Refresh News</button>
+        <button id="btnReadNews" onclick="readNews()" style="margin-left: 10px;">🗣 Read News</button>
+        <audio id="newsAudio" controls style="margin-top: 10px;"></audio>
+        <ul id="newsList" style="margin-top: 10px;"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
